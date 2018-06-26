@@ -64,7 +64,8 @@ app.post("/query", (req, res) => {
     term: `${req.body.place}`,
     location: `${req.body.address}`,
     radius: `${req.body.radius}`,
-    sort_by: `${req.body.sort_by}`
+    sort_by: `${req.body.sort_by}`,
+    price: `${req.body.price}`
   };
 
   client
