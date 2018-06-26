@@ -14,6 +14,26 @@
   <form action="/query", method="POST">
     <input type="search" id="place" name="place" class="form-control ten columns " placeholder="what would you like to look for?" />
     <input type="search" id="address" name="address" class="form-control" placeholder="Where are we going?" />
+    <select name="radius" id="radius">
+      <option value="800">.5 miles</option>
+      <option value="1600">1 mile</option>
+      <option value="2400">1.5 miles</option>
+      <option value="3200">2 miles</option>
+      <option value="4000">2.5 miles</option>
+      <option value="4800">3 miles</option>
+      <option value="5600">3.5 miles</option>
+      <option value="6400">4 miles</option>
+      <option value="7200">4.5 miles</option>
+      <option value="8000">5 miles</option>
+      <option value="16000">10 miles</option>
+      <option value="40000">25 miles</option>
+    </select>
+
+    <select name="sort_by" id="sort_by">
+      <option value="best_match">best match</option>
+      <option value="review_count">review count</option>
+      <option value="distance">distance</option>
+    </select>
     <p>Selected:
       <strong id="address-value">none</strong>
     </p>

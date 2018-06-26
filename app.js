@@ -1,4 +1,5 @@
 const express = require("express");
+const keys = require('./keys.json');
 const app = express();
 const axios = require("axios");
 const yelp = require("yelp-fusion");
@@ -50,8 +51,7 @@ app.get("/query", (req, res) => {
       city: "",
       zip_code: "",
       country: "",
-      state: "",
-      display_address: []
+      state: ""
     },
     phone: "",
     display_phone: "",
@@ -62,7 +62,9 @@ app.get("/query", (req, res) => {
 app.post("/query", (req, res) => {
   const searchRequest = {
     term: `${req.body.place}`,
-    location: `${req.body.address}`
+    location: `${req.body.address}`,
+    radius: `${req.body.radius}`,
+    sort_by: `${req.body.sort_by}`
   };
 
   client
@@ -80,8 +82,8 @@ app.post("/query", (req, res) => {
         url: firstResult.url,
         review_count: firstResult.review_count,
         categories: {
-          alias: firstResult.categories.alias,
-          title: firstResult.categories.title
+          alias: firstResult.categories[0].alias,
+          title: firstResult.categories[0].title
         },
         rating: firstResult.rating,
         coordinates: {
@@ -96,8 +98,7 @@ app.post("/query", (req, res) => {
           city: firstResult.location.city,
           zip_code: firstResult.location.zip_code,
           country: firstResult.location.country,
-          state: firstResult.location.state,
-          display_address: [firstResult.display_address]
+          state: firstResult.location.state
         },
         phone: firstResult.phone,
         display_phone: firstResult.display_phone,

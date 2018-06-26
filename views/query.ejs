@@ -19,41 +19,38 @@
       <hr>
       <p>5. <a href="<%= url %>">Business URL</a></p>
       <hr>
-      <p>6. <%= review_count %></p>
+      <p>6. Reviews: <%= review_count %></p>
       <hr>
-      <p>7. <%= categories.alias %></p>
+      <p>7. Category Alias: <%- JSON.stringify(categories.alias) %></p>
       <hr> 
-      <p>8. <%= categories.title %></p>
+      <p>8. Category Titles: <%- JSON.stringify(categories.title) %></p>
       <hr>
-      <p>9. <%= rating %></p>
+      <p>9. Total Rating: <%= rating %></p>
       <hr>
-      <p>10. <%= coordinates.latitude %> </p>
+      <p>10. Latitude: <%= coordinates.latitude %> </p>
       <hr>
-      <p>11. <%= coordinates.longitude %></p>
+      <p>11. Longitude: <%= coordinates.longitude %></p>
       <hr>
-      <p>12. <%= price %></p>
+      <p>12. Price: <%= price %></p>
       <hr>
-      <p>13. <%= location.address1 %></p>
+      <p>13. Address: <%= location.address1 %>
+        <%= location.address2 %>
+        <%= location.address3 %>
+      </p>
       <hr>
-      <p>14. <%= location.address2 %></p>
+      <p>14. <%= location.city %></p>
       <hr>
-      <p>15. <%= location.address3 %></p>
+      <p>15. <%= location.zip_code %></p>
       <hr>
-      <p>16. <%= location.city %></p>
-      <hr>
-      <p>17. <%= location.zip_code %></p>
-      <hr>
-      <p>18. <%= location.country %></p>
+      <p>16. <%= location.country %></p>
       <hr> 
-      <p>19. <%= location.state %></p>
+      <p>17. <%= location.state %></p>
       <hr>
-      <p>20. <%= location.display_address %></p>
+      <p>18. <%= phone %></p>
       <hr>
-      <p>21. <%= phone %></p>
+      <p>19. <%= display_phone %></p>
       <hr>
-      <p>22. <%= display_phone %></p>
-      <hr>
-      <p>23. <%= distance %></p>
+      <p>20. <%= distance %></p>
 
   </div>
   
