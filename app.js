@@ -1,63 +1,157 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const axios = require('axios');
-const yelp = require('yelp-fusion');
+const axios = require("axios");
+const yelp = require("yelp-fusion");
 const port = process.env.PORT || 3000;
-const apiKey = "eWD0zcvh1Ev_lO8AJHwX0r8Iqv6TLS59YMwDwIC7gQLdKJfVIyiV2bf3OxxviUIuRGEc3CMYMd0OtiOhyj3CwYu52XhtPJhsjah133ZdlrWqaIeqaXqaFZpysn37WnYx";
-const clientId = "FmFfqpBLtWddru070Fwktg";
+const apiKey = keys.api_key;
+const clientId = keys.client_id;
 const client = yelp.client(apiKey);
-const bodyParser = require('body-parser');
-
+const bodyParser = require("body-parser");
 
 axios.defaults.baseURL = `https://api.yelp.com/v3`;
-axios.defaults.headers.get['Authorization'] = `Bearer: ${apiKey}`
+axios.defaults.headers.get["Authorization"] = `Bearer: ${apiKey}`;
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
 
+app.set("view engine", "ejs");
 
-
-app.set('view engine', 'ejs');
-
-app.get('/', (req, res) => {
-  res.render('index.ejs');
+app.get("/", (req, res) => {
+  res.render("index.ejs");
 });
 
+app.get("/query", (req, res) => {
+  res.render("query.ejs", {
+    id: "",
+    alias: "",
+    name: "",
+    image_url: "",
+    is_closed: "",
+    url: "",
+    review_count: "",
+    categories: {
+      alias: "",
+      title: ""
+    },
+    rating: "",
+    coordinates: {
+      latitude: "",
+      longitude: ""
+    },
+    price: "",
+    location: {
+      address1: "",
+      address2: "",
+      address3: "",
+      city: "",
+      zip_code: "",
+      country: "",
+      state: "",
+      display_address: []
+    },
+    phone: "",
+    display_phone: "",
+    distance: ""
+    })
+  });
 
-app.post('/query', (req, res) => {
-
+app.post("/query", (req, res) => {
   const searchRequest = {
     term: `${req.body.place}`,
     location: `${req.body.address}`
   };
+
+  client
+    .search(searchRequest)
+    .then(response => {
+      const firstResult = response.jsonBody.businesses[0];
+      const prettyJson = JSON.stringify(firstResult, null, 4);
+      console.log(prettyJson);
+      res.render("query.ejs", {
+        id: firstResult.id,
+        alias: firstResult.alias,
+        name: firstResult.name,
+        image_url: firstResult.image_url,
+        is_closed: firstResult.is_closed,
+        url: firstResult.url,
+        review_count: firstResult.review_count,
+        categories: {
+          alias: firstResult.categories.alias,
+          title: firstResult.categories.title
+        },
+        rating: firstResult.rating,
+        coordinates: {
+          latitude: firstResult.coordinates.latitude,
+          longitude: firstResult.coordinates.longitude
+        },
+        price: firstResult.price,
+        location: {
+          address1: firstResult.location.address1,
+          address2: firstResult.location.address2,
+          address3: firstResult.location.address3,
+          city: firstResult.location.city,
+          zip_code: firstResult.location.zip_code,
+          country: firstResult.location.country,
+          state: firstResult.location.state,
+          display_address: [firstResult.display_address]
+        },
+        phone: firstResult.phone,
+        display_phone: firstResult.display_phone,
+        distance: firstResult.distance
+      });
+    })
+    .catch(e => {
+      console.log(e);
+    });
+
   console.log(searchRequest);
-
-  // client.search(searchRequest)
-  //   .then((res) => {
-  //     const firstResult = res.jsonBody.businesses[0];
-  //     const prettyJson = JSON.stringify(firstResult, null, 4);
-  //     console.log(prettyJson);
-  //   })
-  //   .catch(e => {
-  //     console.log(e);
-  //   });
-
-
-
 });
 
 
 
 app.listen(port, () => {
-  console.log(`server is running on port ${port}`)
-})
+  console.log(`server is running on port ${port}`);
+});
 
-
+// res.render('query.ejs', {
+//   id: firstResult.id,
+//   alias: firstResult.alias,
+//   name: firstResult.name,
+//   image_url: firstResult.image_url,
+//   url: firstResult.url,
+//   review_count: firstResult.review_count,
+// categories: {
+//   alias: firstResult.categories.alias,
+//   title: firstResult.categories.title
+// },
+// rating: firstResult.rating,
+// coordinates: {
+//   latitude: firstResult.coordinates.latitude,
+//   longitude: firstResult.coordinates.longitude
+// },
+// price: firstResult.price,
+// location: {
+//   address1: firstResult.location.address1,
+//   address2: firstResult.location.address2,
+//   address3: firstResult.location.address3,
+//   city: firstResult.location.city,
+//   zip_code: firstResult.location.zip_code,
+//   country: firstResult.location.zip_code,
+//   country: firstResult.location.country,
+//   state: firstResult.location.state,
+//   display_address: [
+//     firstResult.display_address
+//   ]
+// },
+// phone: firstResult.phone,
+// display_phone: firstResult.display_phone,
+// distance: firstResult.distance
 
 //to search for nearby places with this header
-
 
 //phone search
 // client.phoneSearch({
