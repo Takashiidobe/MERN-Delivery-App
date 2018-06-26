@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha256-2YQRJMXD7pIAPHiXr0s+vlRWA7GYJEK0ARns7k2sbHY=" crossorigin="anonymous" />
+  <title>Document</title>
+</head>
+
+<body>
+
+  <form action="/query", method="POST">
+    <input type="search" id="place" name="place" class="form-control ten columns " placeholder="what would you like to look for?" />
+    <input type="search" id="address" name="address" class="form-control" placeholder="Where are we going?" />
+    <p>Selected:
+      <strong id="address-value">none</strong>
+    </p>
+    <input type="submit" class="button-primary" />
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/places.js@1.7.3"></script>
+  <script>
+    (function () {
+      const placesAutocomplete = places({
+        container: document.querySelector('#address')
+      });
+
+      const address = document.querySelector('#address-value')
+      placesAutocomplete.on('change', function (e) {
+        address.textContent = e.suggestion.value
+      });
+
+      placesAutocomplete.on('clear', function () {
+        address.textContent = 'none';
+      });
+
+    })();
+  </script>
+</body>
+
+</html>
