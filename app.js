@@ -105,10 +105,14 @@ app.post("/query", (req, res) => {
         display_phone: firstResult.display_phone,
         distance: firstResult.distance
       });
-    })
+    }).then(
+      client.reviews(`${firstResult.name}`))
+        .then(response => {
+          console.log(response.jsonBody.reviews[0].text);
+        })
     .catch(e => {
       console.log(e);
-    });
+    })
 
   console.log(searchRequest);
 });
@@ -161,49 +165,49 @@ app.get('/phone/query', (req, res) => {
 
 app.post('/phone/query', (req, res) => {
   const searchRequest = {
-    phone: `+${req.body.phone-number}`
+    phone: `+${req.body.phone_number}`
   };
   
   client
     .phoneSearch(searchRequest)
     .then(response => {
-      const firstResult = response.jsonBody.businesses[0];
+      const firstResult = response.jsonBody;
       const prettyJson = JSON.stringify(firstResult, null, 4);
       console.log(prettyJson);
       res.render('phoneQuery.ejs', {
         total: firstResult.total,
         businesses: [
           {
-            rating: firstResult.rating,
-            price: firstResult.price,
-            phone: firstResult.phone,
-            id: firstResult.id,
-            alias: firstResult.alias,
+            rating: firstResult.businesses.rating,
+            price: firstResult.businesses.price,
+            phone: firstResult.businesses.phone,
+            id: firstResult.businesses.id,
+            alias: firstResult.businesses.alias,
             categories: [
               {
-                alias: firstResult.categories[0].alias,
-                title: firstResult.categories[0].title
+                alias: firstResult.businesses.categories[0].alias,
+                title: firstResult.businesses.categories[0].title
               }
             ],
-            review_count: firstResult.review_count,
-            name: firstResult.name,
-            url: firstResult.url,
+            review_count: firstResult.businesses.review_count,
+            name: firstResult.businesses.name,
+            url: firstResult.businesses.url,
             coordinates: {
-              latitude: firstResult.coordinates.latitude,
-              longitude: firstResult.coordinates.longitude
+              latitude: firstResult.businesses.coordinates.latitude,
+              longitude: firstResult.businesses.coordinates.longitude
             },
-            image_url: firstResult.image_url,
-            is_closed: firstResult.is_closed,
+            image_url: firstResult.businesses.image_url,
+            is_closed: firstResult.businesses.is_closed,
             location: {
-              city: firstResult.location.city,
-              country: firstResult.location.country,
-              address2: firstResult.location.address2,
-              address3: firstResult.location.address3,
-              state: firstResult.location.state,
-              address1: firstResult.location.address1,
-              zip_code: firstResult.location.zip_code
+              city: firstResult.businesses.location.city,
+              country: firstResult.businesses.location.country,
+              address2: firstResult.businesses.location.address2,
+              address3: firstResult.businesses.location.address3,
+              state: firstResult.businesses.location.state,
+              address1: firstResult.businesses.location.address1,
+              zip_code: firstResult.businesses.location.zip_code
             },
-            transactions: [firstResult.transactions]
+            transactions: [firstResult.businesses.transactions]
           }
         ]
       })
