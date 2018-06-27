@@ -113,101 +113,105 @@ app.post("/query", (req, res) => {
   console.log(searchRequest);
 });
 
-
-
-app.listen(port, () => {
-  console.log(`server is running on port ${port}`);
+//phone page section
+app.get('/phone', (req, res) => {
+  res.render('phone.ejs');
 });
 
-// res.render('query.ejs', {
-//   id: firstResult.id,
-//   alias: firstResult.alias,
-//   name: firstResult.name,
-//   image_url: firstResult.image_url,
-//   url: firstResult.url,
-//   review_count: firstResult.review_count,
-// categories: {
-//   alias: firstResult.categories.alias,
-//   title: firstResult.categories.title
-// },
-// rating: firstResult.rating,
-// coordinates: {
-//   latitude: firstResult.coordinates.latitude,
-//   longitude: firstResult.coordinates.longitude
-// },
-// price: firstResult.price,
-// location: {
-//   address1: firstResult.location.address1,
-//   address2: firstResult.location.address2,
-//   address3: firstResult.location.address3,
-//   city: firstResult.location.city,
-//   zip_code: firstResult.location.zip_code,
-//   country: firstResult.location.zip_code,
-//   country: firstResult.location.country,
-//   state: firstResult.location.state,
-//   display_address: [
-//     firstResult.display_address
-//   ]
-// },
-// phone: firstResult.phone,
-// display_phone: firstResult.display_phone,
-// distance: firstResult.distance
+//phone post request
+app.get('/phone/query', (req, res) => {
+  res.render('phoneQuery.ejs', {
+    total: "",
+    businesses: [
+      {
+        rating: "",
+        price: "",
+        phone: "",
+        id: "",
+        alias: "",
+        categories: [
+          {
+            alias: "",
+            title: ""
+          }
+        ],
+        review_count: "",
+        name: "",
+        url: "",
+        coordinates: {
+          latitude: "",
+          longitude: ""
+        },
+        image_url: "",
+        is_closed: "",
+        location: {
+          city: "",
+          country: "",
+          address2: "",
+          address3: "",
+          state: "",
+          address1: "",
+          zip_code: ""
+        },
+        transactions: [""]
+      }
+    ]
+  }
+)});
 
-//to search for nearby places with this header
+app.post('/phone/query', (req, res) => {
+  const searchRequest = {
+    phone: `+${req.body.phone-number}`
+  };
+  
+  client
+    .phoneSearch(searchRequest)
+    .then(response => {
+      const firstResult = response.jsonBody.businesses[0];
+      const prettyJson = JSON.stringify(firstResult, null, 4);
+      console.log(prettyJson);
+      res.render('phoneQuery.ejs', {
+        total: firstResult.total,
+        businesses: [
+          {
+            rating: firstResult.rating,
+            price: firstResult.price,
+            phone: firstResult.phone,
+            id: firstResult.id,
+            alias: firstResult.alias,
+            categories: [
+              {
+                alias: firstResult.categories[0].alias,
+                title: firstResult.categories[0].title
+              }
+            ],
+            review_count: firstResult.review_count,
+            name: firstResult.name,
+            url: firstResult.url,
+            coordinates: {
+              latitude: firstResult.coordinates.latitude,
+              longitude: firstResult.coordinates.longitude
+            },
+            image_url: firstResult.image_url,
+            is_closed: firstResult.is_closed,
+            location: {
+              city: firstResult.location.city,
+              country: firstResult.location.country,
+              address2: firstResult.location.address2,
+              address3: firstResult.location.address3,
+              state: firstResult.location.state,
+              address1: firstResult.location.address1,
+              zip_code: firstResult.location.zip_code
+            },
+            transactions: [firstResult.transactions]
+          }
+        ]
+      })
+    }).catch(e => {
+      console.log(e);
+  })
+  });
 
-//phone search
-// client.phoneSearch({
-//   phone: '+14023271991'
-// }).then(response => {
-//   console.log(response.jsonBody.businesses[0].name);
-// }).catch(e => {
-//   console.log(e);
-// });
-
-//transaction search
-
-// client.transactionSearch('delivery', {
-//   location: 'lincoln'
-// }).then(response => {
-//   console.log(response.jsonBody.businesses[0].name);
-// }).catch(e =>{
-//   console.log(e);
-// });
-
-//business search
-// client.business('cultiva').then(response => {
-//   console.log(repsonse.jsonBody.name);
-// }).catch(e => {
-//   console.log(e);
-// });
-
-//reviews
-// client.reviews('cultiva-lincoln-nebraska').then(response => {
-//   console.log(response.jsonBody.reviews[0].text);
-// }).catch(e => {
-//   console.log(e);
-// });
-
-//autocomplete
-
-// client.autocomplete({
-//   text: 'pizza'
-// }).then(response => {
-//   console.log(response.jsonBody.terms[0].text);
-// }).catch(e => {
-//   console.log(e);
-// });
-
-//business match
-// client.businessMatch('lookup', {
-//   name: 'Pannikin Coffee & Tea',
-//   address1: '510 N Coast Hwy 101',
-//   address2: 'Encinitas, CA 92024',
-//   city: 'Encinitas',
-//   state: 'CA',
-//   country: 'US'
-// }).then(response => {
-//   console.log(response.jsonBody.businesses[0].id);
-// }).catch(e => {
-//   console.log(e);
-// });
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
