@@ -1,16 +1,12 @@
 const express = require("express");
-const keys = require('./keys.json');
+const keys = require("./keys.json");
 const app = express();
-const axios = require("axios");
 const yelp = require("yelp-fusion");
 const port = process.env.PORT || 3000;
 const apiKey = keys.api_key;
 const clientId = keys.client_id;
 const client = yelp.client(apiKey);
 const bodyParser = require("body-parser");
-
-axios.defaults.baseURL = `https://api.yelp.com/v3`;
-axios.defaults.headers.get["Authorization"] = `Bearer: ${apiKey}`;
 
 app.use(bodyParser.json());
 app.use(
@@ -56,8 +52,8 @@ app.get("/query", (req, res) => {
     phone: "",
     display_phone: "",
     distance: ""
-    })
   });
+});
 
 app.post("/query", (req, res) => {
   const searchRequest = {
@@ -105,26 +101,22 @@ app.post("/query", (req, res) => {
         display_phone: firstResult.display_phone,
         distance: firstResult.distance
       });
-    }).then(
-      client.reviews(`${firstResult.name}`))
-        .then(response => {
-          console.log(response.jsonBody.reviews[0].text);
-        })
+    })
     .catch(e => {
       console.log(e);
-    })
+    });
 
   console.log(searchRequest);
 });
 
 //phone page section
-app.get('/phone', (req, res) => {
-  res.render('phone.ejs');
+app.get("/phone", (req, res) => {
+  res.render("phone.ejs");
 });
 
 //phone post request
-app.get('/phone/query', (req, res) => {
-  res.render('phoneQuery.ejs', {
+app.get("/phone/query", (req, res) => {
+  res.render("phoneQuery.ejs", {
     total: "",
     businesses: [
       {
@@ -160,21 +152,21 @@ app.get('/phone/query', (req, res) => {
         transactions: [""]
       }
     ]
-  }
-)});
+  });
+});
 
-app.post('/phone/query', (req, res) => {
+app.post("/phone/query", (req, res) => {
   const searchRequest = {
     phone: `+${req.body.phone_number}`
   };
-  
+
   client
     .phoneSearch(searchRequest)
     .then(response => {
       const firstResult = response.jsonBody;
       const prettyJson = JSON.stringify(firstResult, null, 4);
       console.log(prettyJson);
-      res.render('phoneQuery.ejs', {
+      res.render("phoneQuery.ejs", {
         total: firstResult.total,
         businesses: [
           {
@@ -210,11 +202,78 @@ app.post('/phone/query', (req, res) => {
             transactions: [firstResult.businesses.transactions]
           }
         ]
-      })
-    }).catch(e => {
+      });
+    })
+    .catch(e => {
       console.log(e);
-  })
+    });
+});
+
+app.get("/delivery", (req, res) => {
+  res.render("delivery.ejs", {
+    results: [],
+    business_id: [],
+    business_alias: [],
+    business_price: [],
+    business_url: [],
+    business_rating: [],
+    // business_zip_code: [],
+    // business_state: [],
+    // business_city: [],
+    // business_address2: [],
+    // business_address3: [],
+    // business_address1: [],
+    // business_category_alias: [],
+    // business_category_title: [],
+    // business_phone: [],
+    // business_coordinates_longitude: [],
+    // business_coordinates_latitude: [],
+    // business_image_url: [],
+    // business_is_closed: [],
+    // business_name: [],
+    // business_review_count: [],
+    // business_transactions: []
   });
+});
+
+app.post("/delivery/results", (req, res) => {
+  client
+    .transactionSearch("delivery", {
+      location: `${req.body.address}`
+    })
+    .then(response => {
+      console.log(JSON.stringify(response.jsonBody.businesses[0]));
+      console.log(JSON.stringify(response.jsonBody.length));
+      res.render("deliveryResults.ejs", {
+        results: response.jsonBody.businesses,
+        business_id: response.jsonBody.businesses[0].id,
+        business_alias: response.jsonBody.businesses[0].alias,
+        business_price: response.jsonBody.businesses[0].price,
+        business_url: response.jsonBody.businesses[0].url,
+        business_rating: response.jsonBody.businesses[0].rating,
+        // business_zip_code: response.jsonBody.businesses.location.zip_code,
+        // business_state: response.jsonBody.businesses.location.state,
+        // business_city: response.jsonBody.businesses.location.city,
+        // business_address2: repsonse.jsonBody.businesses.location.address2,
+        // business_address3: response.jsonBody.businesses.location.address3,
+        // business_address1: response.jsonBody.businesses.location.address1,
+        // business_category_alias: response.jsonBody.businesses.categories.alias,
+        // business_category_title: response.jsonBody.businesses.categories.title,
+        // business_phone: response.jsonBody.businesses.phone,
+        // business_coordinates_longitude: response.jsonBody.businesses.coordinates.longitude,
+        // business_coordinates_latitude: response.jsonBody.businesses.coordinates.latitude,
+        // business_image_url: response.jsonBody.businesses.image_url,
+        // bussiness_is_closed: repsonse.jsonBody.businesses.is_closed,
+        // business_name: response.jsonBody.businesses.name,
+        // business_review_count: response.jsonBody.businesses.review_count,
+        // business_transactions: response.jsonBody.businesses.transactions
+      })
+      
+    })
+    .catch(e => {
+      console.log(e);
+    });
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
