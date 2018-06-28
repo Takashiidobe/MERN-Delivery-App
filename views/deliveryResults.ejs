@@ -13,9 +13,17 @@
     <!-- I want to build a card with each one  -->
     <% for (let i = 0; i < businesses.length; i++) { %>
       <div class="<%= i %>">
-      <%- JSON.stringify(businesses[i].id) %>
-      <%- JSON.stringify(businesses[i].rating) %>
-      <%- JSON.stringify(businesses[i].price) %>
+        <%= i + 1 %>: <hr>
+      <p>Business id: <%- JSON.stringify(businesses[i].id) %></o>
+      <p>Business rating:<%- JSON.stringify(businesses[i].rating) %></p>
+      <p>Business price: <%- JSON.stringify(businesses[i].price) %></p>
+      <p>Business transaction: <%- JSON.stringify(businesses[i].transactions) %></p>
+      <p>Business name: <%- JSON.stringify(businesses[i].name) %></p>
+      <p>Business phone:<%- JSON.stringify(businesses[i].phone) %></p>
+      <p>Business alias: <%- JSON.stringify(businesses[i].alias) %></p>
+      <p>Business longitude: <%- JSON.stringify(businesses[i].coordinates.longitude) %></p>
+      <p>Business Latitude: <%- JSON.stringify(businesses[i].coordinates.latitude) %></p>
+      </p>
       </div>
     <% } %>
   </div>

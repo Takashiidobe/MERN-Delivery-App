@@ -319,7 +319,6 @@ app.post("/delivery/results", (req, res) => {
 
       res.render("deliveryResults.ejs", {
         businesses: x
-        // results: results.push(response.jsonBody.businesses[i].result),
         // business_id: response.jsonBody.businesses[0].id,
         // business_alias: response.jsonBody.businesses[0].alias,
         // business_price: response.jsonBody.businesses[0].price,
