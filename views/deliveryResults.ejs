@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link type="text/css" rel="stylesheet" href="/../scss/deliveryResults.css">
   <title>Document</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
     <!-- array 0 is the first object -->
     <!-- I want to build a card with each one  -->
     <% for (let i = 0; i < businesses.length; i++) { %>
-      <div class="<%= i %>">
+      <div class="card <%= i %>">
         <%= i + 1 %>: <hr>
       <p>Business id: <%- JSON.stringify(businesses[i].id) %></o>
       <p>Business rating:<%- JSON.stringify(businesses[i].rating) %></p>
@@ -21,8 +22,10 @@
       <p>Business name: <%- JSON.stringify(businesses[i].name) %></p>
       <p>Business phone:<%- JSON.stringify(businesses[i].phone) %></p>
       <p>Business alias: <%- JSON.stringify(businesses[i].alias) %></p>
+      <p>Business url: <a href="<%= businesses[i].url %>">Business URL</a></p>
       <p>Business longitude: <%- JSON.stringify(businesses[i].coordinates.longitude) %></p>
       <p>Business Latitude: <%- JSON.stringify(businesses[i].coordinates.latitude) %></p>
+      <p>Business Image: <img src="<%= businesses[i].image_url %>"></p>
       </p>
       </div>
     <% } %>

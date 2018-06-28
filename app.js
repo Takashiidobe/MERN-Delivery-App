@@ -8,12 +8,18 @@ const clientId = keys.client_id;
 const client = yelp.client(apiKey);
 const bodyParser = require("body-parser");
 
+
+
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
     extended: true
   })
 );
+//set static files to use
+app.use(express.static(__dirname + '/views'));
+app.use(express.static(__dirname + '/css'));
 
 app.set("view engine", "ejs");
 
@@ -212,28 +218,6 @@ app.post("/phone/query", (req, res) => {
 app.get("/delivery", (req, res) => {
   res.render("delivery.ejs", {
     businesses: ''
-    // results: [],
-    // business_id: [],
-    // business_alias: [],
-    // business_price: [],
-    // business_url: [],
-    // business_rating: [],
-    // business_zip_code: [],
-    // business_state: [],
-    // business_city: [],
-    // business_address2: [],
-    // business_address3: [],
-    // business_address1: [],
-    // business_category_alias: [],
-    // business_category_title: [],
-    // business_phone: [],
-    // business_coordinates_longitude: [],
-    // business_coordinates_latitude: [],
-    // business_image_url: [],
-    // business_is_closed: [],
-    // business_name: [],
-    // business_review_count: [],
-    // business_transactions: []
   });
 });
 
@@ -244,102 +228,12 @@ app.post("/delivery/results", (req, res) => {
     })
     .then(response => {
       //returns all the objects that we have
-      let x = response.jsonBody.businesses;
+      let businesses = response.jsonBody.businesses;
       // console.log(x.length);
       // console.log(x);
 
-      let business_id = [];
-      let business_alias = [];
-      let business_price = [];
-      let business_url = [];
-      let business_rating = [];
-      let business_zip_code = [];
-      let business_state = [];
-      let business_city = [];
-      let business_address2 = [];
-      let business_address3 = [];
-      let business_address1 = [];
-      let business_category_alias = [];
-      let business_category_title = [];
-      let business_phone = [];
-      let business_coordinates_longitude = [];
-      let business_coordinates_latitude = [];
-      let business_image_url = [];
-      let business_is_closed = [];
-      let business_name = [];
-      let business_review_count = [];
-      let business_transactions = [];
-
-      console.log(x.length);
-      for (let i = 0; i < x.length; i++) {
-        business_id.push(x[i].id);
-        business_alias.push(x[i].alias);
-        business_price.push(x[i].price);
-        business_url.push(x[i].url);
-        business_rating.push(x[i].rating);
-        business_zip_code.push(x[i].location.zip_code);
-        business_state.push(x[i].location.state);
-        business_city.push(x[i].location.city);
-        business_address2.push(x[i].location.address2);
-        business_address3.push(x[i].location.address3);
-        business_address1.push(x[i].location.address1);
-        business_category_alias.push(x[i].categories.alias);
-        business_category_title.push(x[i].categories.title);
-        business_phone.push(x[i].phone);
-        business_coordinates_longitude.push(x[i].coordinates.longitude);
-        business_coordinates_latitude.push(x[i].coordinates.latitude);
-        business_image_url.push(x[i].image_url);
-        business_is_closed.push(x[i].is_closed);
-        business_name.push(x[i].name);
-        business_review_count.push(x[i].review_count);
-        business_transactions.push(x[i].transactions);
-      }
-
-      console.log(business_id);
-      console.log(business_alias);
-      console.log(business_price);
-      console.log(business_url);
-      console.log(business_rating);
-      console.log(business_zip_code);
-      console.log(business_state);
-      console.log(business_city);
-      console.log(business_address2);
-      console.log(business_address3);
-      console.log(business_address1);
-      console.log(business_category_alias);
-      console.log(business_category_title);
-      console.log(business_phone);
-      console.log(business_coordinates_latitude);
-      console.log(business_coordinates_longitude);
-      console.log(business_image_url);
-      console.log(business_is_closed);
-      console.log(business_name);
-      console.log(business_review_count);
-      console.log(business_transactions);
-
       res.render("deliveryResults.ejs", {
-        businesses: x
-        // business_id: response.jsonBody.businesses[0].id,
-        // business_alias: response.jsonBody.businesses[0].alias,
-        // business_price: response.jsonBody.businesses[0].price,
-        // business_url: response.jsonBody.businesses[0].url,
-        // business_rating: response.jsonBody.businesses[0].rating,
-        // business_zip_code: response.jsonBody.businesses.location.zip_code,
-        // business_state: response.jsonBody.businesses.location.state,
-        // business_city: response.jsonBody.businesses.location.city,
-        // business_address2: repsonse.jsonBody.businesses.location.address2,
-        // business_address3: response.jsonBody.businesses.location.address3,
-        // business_address1: response.jsonBody.businesses.location.address1,
-        // business_category_alias: response.jsonBody.businesses.categories.alias,
-        // business_category_title: response.jsonBody.businesses.categories.title,
-        // business_phone: response.jsonBody.businesses.phone,
-        // business_coordinates_longitude: response.jsonBody.businesses.coordinates.longitude,
-        // business_coordinates_latitude: response.jsonBody.businesses.coordinates.latitude,
-        // business_image_url: response.jsonBody.businesses.image_url,
-        // bussiness_is_closed: repsonse.jsonBody.businesses.is_closed,
-        // business_name: response.jsonBody.businesses.name,
-        // business_review_count: response.jsonBody.businesses.review_count,
-        // business_transactions: response.jsonBody.businesses.transactions
+        businesses: businesses
       })
       
     })
