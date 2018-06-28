@@ -9,6 +9,15 @@ const client = yelp.client(apiKey);
 const bodyParser = require("body-parser");
 
 
+const sass = require('node-sass');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+gulp.task('sass', () => {
+  gulp.src('./sass/**/*.scss')
+  .pipe(sass().on('error', sass.logError))
+  .pipe(gulp.dest('./css'));
+});
+
 
 
 app.use(bodyParser.json());
