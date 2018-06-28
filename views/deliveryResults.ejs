@@ -11,14 +11,13 @@
     <!-- Show them on their respective places -->
     <!-- array 0 is the first object -->
     <!-- I want to build a card with each one  -->
-    <ul>
-    <li><%- JSON.stringify(business_id) %></li>
-    <li><%- JSON.stringify(business_alias) %></li>
-    <li><%- JSON.stringify(business_price) %></li>
-    <li><%- JSON.stringify(business_url) %></li>
-    <li><%- JSON.stringify(business_rating) %></li>
-    <li><%- JSON.stringify(business_id) %></li>
-    </ul>
+    <% for (let i = 0; i < businesses.length; i++) { %>
+      <div class="<%= i %>">
+      <%- JSON.stringify(businesses[i].id) %>
+      <%- JSON.stringify(businesses[i].rating) %>
+      <%- JSON.stringify(businesses[i].price) %>
+      </div>
+    <% } %>
   </div>
 </body>
 </html>
