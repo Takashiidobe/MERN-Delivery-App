@@ -1,0 +1,19 @@
+html, body {
+  font-size: 62.5%;
+}
+
+.card {
+  background-color: firebrick;
+  font-size: 1.2rem;
+  width: auto;
+  height: 45rem;
+}
+
+img {
+  width: 25%;
+  height: 25%;
+}
+
+div.card > p {
+  font-size: 1.6rem;
+}

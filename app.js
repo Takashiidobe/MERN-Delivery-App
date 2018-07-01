@@ -8,18 +8,6 @@ const clientId = keys.client_id;
 const client = yelp.client(apiKey);
 const bodyParser = require("body-parser");
 
-
-const sass = require('node-sass');
-const gulp = require('gulp');
-const sass = require('gulp-sass');
-gulp.task('sass', () => {
-  gulp.src('./sass/**/*.scss')
-  .pipe(sass().on('error', sass.logError))
-  .pipe(gulp.dest('./css'));
-});
-
-
-
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -28,7 +16,7 @@ app.use(
 );
 //set static files to use
 app.use(express.static(__dirname + '/views'));
-app.use(express.static(__dirname + '/css'));
+app.use(express.static(__dirname + '/views/css/'));
 
 app.set("view engine", "ejs");
 
