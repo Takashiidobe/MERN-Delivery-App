@@ -1,21 +1,27 @@
 {
-  "name": "node-yelp-suggestions",
+  "name": "mern-delivery-app",
   "version": "1.0.0",
-  "main": "app.js",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \" npm run client \""
+  },
+  "author": "Takashi Idobe",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
+    "concurrently": "^3.6.0",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
-    "gulp": "^3.9.1",
-    "gulp-sass": "^4.0.1",
-    "node-sass": "^4.9.0",
-    "places.js": "^1.7.3",
+    "mongoose": "^5.2.1",
     "yelp-fusion": "^2.0.3"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "scss": "node-sass --watch scss -o css"
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }
